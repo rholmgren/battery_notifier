@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="rachelleholmgren.batterynotifier" >
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+
+        <service android:name="rachelleholmgren.lowbatterynotifier.RHService"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="rachelleholmgren.batterynotifier.RHService"/>
+            </intent-filter>
+        </service>
+
+
+        <activity
+            android:name="rachelleholmgren.lowbatterynotifier.BatteryNotifierActivity">
+
+        </activity>
+
+        <receiver android:name="rachelleholmgren.lowbatterynotifier.BatteryReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="rachelleholmgren.lowbatterynotifier.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
