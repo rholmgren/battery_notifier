@@ -13,17 +13,10 @@ import android.widget.Toast;
  */
 public class RHService extends Service {
     private BatteryReceiver breceiver;
-    private final IBinder mBinder = new MyBinder();
-    private Messenger outMessenger;
 
-    public class MyBinder extends Binder {
-        RHService getService() {
-            return RHService.this;
-        }
-    }
+
     @Override
     public void onCreate() {
-        Toast.makeText(getApplicationContext(), "SERVICE CREATED", Toast.LENGTH_LONG).show();
         breceiver = new BatteryReceiver();
         registerReceiver(breceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
