@@ -1,54 +1,56 @@
 package rachelleholmgren.lowbatterynotifier;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import android.content.SharedPreferences;
 import android.os.BatteryManager;
-import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
-import rachelleholmgren.batterynotifier.R;
 
 
 /**
  * Created by rachelleholmgren on 1/4/16.
+ *
  */
+
+
 public class BatteryReceiver extends BroadcastReceiver {
 
-    BatteryNotifierActivity batteryNotifierActivity = new BatteryNotifierActivity();
+    // 1. Send text and show notification when battery life
+    //    drops below lowerBoundText,
+    // 2. If a) battery life reaches above upperBoundText and
+    //       b) battery life falls below lowerBoundText again:
+    //          Resend text to contacts and show notification.
+
+    int lowerBoundText = 4;
+    int upperBoundText = 5;
+
+    String msg = "Phone is about to die. May be unreachable soon.";
+
+    BatteryNotifier batteryNotifier = new BatteryNotifier(msg);
 
     @Override
+
+    // Receive notifications of changed battery life.
+    // Calculate remaining battery percentage.
+
     public void onReceive(Context context, Intent intent) {
         SplashScreen.sharedPreferences = context.getSharedPreferences("rachelleholmgren.lowbatterynotifier", Context.MODE_PRIVATE);
         int    level   = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
         int    scale   = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
         int    percent = (level*100)/scale;
-        if( percent < 6 && SplashScreen.sharedPreferences.getBoolean("textSent", false) == false) {
-            batteryNotifierActivity.send();
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.lowbattery)
-                            .setContentTitle("Low Battery Notifier")
-                            .setContentText("Contacts notified of low battery");
+        boolean textSent = SplashScreen.sharedPreferences.getBoolean("textSent", false);
 
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(1, mBuilder.build());
-
-
-
+        // Check if battery is below lowerBound and text hasn't already been sent
+        if( percent < lowerBoundText && textSent == false) {
+            batteryNotifier.send();
+            batteryNotifier.showNotification(context);
         }
-        if (percent > 50){
-            SharedPreferences.Editor editor = SplashScreen.sharedPreferences.edit();
-            editor.putBoolean("textSent", false);
-            editor.apply();
 
+        // Otherwise forget about previously  texts,
+        // and prepare to send text again if battery life
+        // falls below the lower bound.
+        else if (percent > upperBoundText){
+            batteryNotifier.setTextSent(false);
         }
     }
-
-
-
-
 }

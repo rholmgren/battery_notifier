@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:text="Only need to set contacts once after app is installed."
         android:id="@+id/textView"
-
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
@@ -22,9 +21,17 @@
         android:layout_height="wrap_content"
         android:text="(Re)set contacts"
         android:id="@+id/setNewContactsBtn"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="82dp"
+        android:layout_below="@+id/textsEnabled"
         android:layout_centerHorizontal="true" />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Texts enabled:"
+        android:id="@+id/textsEnabled"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
