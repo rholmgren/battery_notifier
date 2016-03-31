@@ -12,8 +12,12 @@ contacts stored in shared preferences string set.
 	onReceive function:
       If text has not yet been sent out for current cycle (textSent in sharedPreferences is false), 
       and phone is less than 5% battery life:
-          Text is sent out to set of contacts,
-          Notification is issued
-          boolean TextSent is set to True. 
+
+          1. Text is sent out to set of contacts.
+         
+          2. Notification is issued.
+          
+          3. boolean TextSent is set to True. 
+          
       When phone is back up above 20% & phone is charging, TextSent will be be reset to False so 
       next time it falls below 5% another text and notification will be sent.
