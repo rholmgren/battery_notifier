@@ -42,7 +42,7 @@ public class BatteryNotifier {
         Set<String> phonenums = getPhoneNumbers();
         SmsManager sms = SmsManager.getDefault();
 
-        // Send the same message to all phone numbers entered by user
+        // Send the same message to all phone numbers
         if(phonenums != null) {
                 for (String str : phonenums) {
                     sms.sendTextMessage(str, null, msg, null, null);
@@ -54,15 +54,17 @@ public class BatteryNotifier {
 
     public static void showNotification(Context context){
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.drawable.lowbattery)
-                        .setContentTitle("Low Battery Notifier")
-                        .setContentText("Contacts notified of low battery");
+        Set<String> phonenums = getPhoneNumbers();
+        if(phonenums != null) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(context)
+                            .setSmallIcon(R.drawable.lowbattery)
+                            .setContentTitle("Low Battery Notifier")
+                            .setContentText("Contacts notified of low battery");
 
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());
-
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(1, mBuilder.build());
+        }
     }
 
     public static void setTextSent(boolean b){
